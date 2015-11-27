@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
   $('.box textarea').addProofreader({ edit_text_content: 'Edit Text', proofread_content: 'Proofread' });
+  var dataPlots = [0.3333333333333333, 1, -2.769230769230769, -2.1818181818181817, 2.3333333333333335, -0.6428571428571429, 2.4, -0.6666666666666666, 1.9, -0.6923076923076923];
 
   $('#button').on("click", function(){
     var q1 = $('#Q1').val().trim().replace(".", "");
@@ -17,7 +18,8 @@ $(document).ready(function(){
     var q12 = $('#Q12').val();
 
     var story = '';
-    // var dataYPlots = [];
+    console.log(dataPlots);
+    console.log(dataPlots.length);
     var templates = { water:    ["A ripple breaks still water.  It is the first echo of action that, however small, disrupts the equilibrium of a whole body of water.  ",
                                  "It only takes one motion against the norm.  " + q2 + " and they aspire to affect change.  ",
                                  "Where others sit on the shore, " + q1 + " dives in.  ",
@@ -43,9 +45,9 @@ $(document).ready(function(){
                       ]};
     var template = templates[$('#template-selection').val()];
     // function createStory(){
-      // for(var i = 0; i < template.length; i++){
-    for(var i = 0; i < 2; i++){
-      var analyzeText = template[i].toString(); //.replace('..', '. ').replace('.,', ',').toString();
+    for(var i = 0; i < template.length; i++){
+    // for(var i = 0; i < 2; i++){
+      var analyzeText = template[i].replace('..', '. ').replace('.,', ',').toString();
       getEmotions(analyzeText);
       story += analyzeText;
     };
@@ -169,7 +171,7 @@ $(document).ready(function(){
           emotions = emotions.concat(data.groups[1].emotions)
           // console.log(emotions);
           mapEmotions(emotions);
-          // console.log(dataYPlots);
+          // console.log(dataPlots);
         },
         error: function(jqXHR, status, error){
           console.log(jqXHR);
@@ -195,18 +197,20 @@ $(document).ready(function(){
       console.log(sum + ' : sum');
       console.log(count + ' : count');
       console.log(parseFloat(sum / count) + ': mean');
-      dataYPlots.push(parseFloat(sum / count));
-      console.log(dataYPlots);
+      dataPlots.push(parseFloat(sum / count));
+      console.log(dataPlots);
       return parseFloat(sum / count);
     }
-    // console.log(dataYPlots);
+    // console.log(dataPlots);
     $('#output').html(story);
   });
 
-  // console.log(dataYPlots.length + ' vs. ' + template.length)
+  // console.log(dataPlots.length + ' vs. ' + template.length)
   $('#graph').on("click", function(){
-      data1 = [[0, .333333333333333], [1, 3.333333333333333], [2, 1.909090909090], [3, 4], [4, 4], [5, 1]]
-      console.log('HERE in graph click');
+      data1 = [];
+      for(var i = 0; i < dataPlots.length; i++){
+        data1.push([i + 1, dataPlots[i]]);
+      };
       dataForGraph = [{
               data: data1,
               label: "linear",
