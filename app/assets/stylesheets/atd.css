@@ -23,16 +23,22 @@
 {
    width: 14px;
    height: 14px;
-   background-image: url('../images/writing.gif');
+   /*background-image: url('../images/writing.gif');*/
+   background-color: #AAA;
    display: block;
+   border: 1px solid green;
+   border-radius: 3px;
 }
 
 .AtD_edit_button
 {
    width: 14px;
    height: 14px;
-   background-image: url('../images/editing.gif');
+   /*background-image: url('../images/editing.gif');*/
+   background-color: #AAA;
    display: block;
+   border: 1px solid green;
+   border-radius: 3px;
 }
 
 /* Menu styles derived from:

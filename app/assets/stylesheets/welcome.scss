@@ -2,23 +2,61 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
 body{
   font-family: 'Inconsolata', arial;
-}
-#placeholder {
-  border: 1px solid black;
-  border-radius: 5px;
+  background-color: #ECECEC;
 }
 
-div .box textarea {
+.display{
+  z-index: 1;
+  max-width: 66%;
+}
+
+#placeholder {
+  border: 1px solid black;
+  border-radius: 3px;
+  width: 400px;
+  height: 200px;
+}
+
+div.box textarea {
   margin: 5px 10px 10px 10px;
   rows: 10;
   columns: 30;
   width: 500px;
-  height: 50px;
+  min-height: 50px;
   word-wrap: break;
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 14px;
 }
 
+div.testing-box {
+  z-index: 0;
+  position: fixed;
+  padding: 2px;
+  top: 0;
+  right: 0;
+  min-width: 30%;
+  min-height: 90%;
+  border: 3px solid #F90;
+  border-radius: 3px;
+  background-color: #DDD;
+}
 
+#output {
+  font-size: 1em;
+  height: 400px;
+  width: 95%;
+  margin:auto;
+  border-radius: 3px;
+}
+
+#play {
+
+}
+
+#gist p{
+  font-size: 1.2em;
+  color: #F0F;
+}

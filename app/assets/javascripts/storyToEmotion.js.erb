@@ -1,0 +1,277 @@
+// var AtDCore = require('./atd.core.js');
+
+$(document).ready(function(){
+  var dataPlots = [];
+  // $(document).responsiveVoice.speak('Welcome Pradeep');
+
+  $('textarea').addProofreader({ edit_text_content: 'Edit Text', proofread_content: 'Proofread' });
+
+  var overArchingEmot = {'4': 'Appreciation/Freedom/Love',
+                          '3': 'Passion/Enthusiasm',
+                          '2': 'Belief/Hope/Optimism',
+                          '1': 'Contentment/Serenity',
+                          '0': 'Boredom/Pessimism',
+                         '-1': 'Frustration/Disappointment',
+                         '-2': 'Doubt/Worry',
+                         '-3': 'Blame/Discouragement',
+                         '-4': 'Hatred/Anger',
+                         '-5': 'Insecurity/Unworthiness',
+                         '-6': 'Fear/Grief/Despair'}
+
+  // alert('HERE HERE HERE');
+  // $('#ajax').on("click", function(){
+  //   alert("woa, you sure");
+  //   $.ajax({
+  //     url: 'http://service.afterthedeadline.com/checkDocument',
+  //     method: 'POST',
+  //     headers: {"key": "thisStringTest55555555555555555555555555555555",
+  //               //"data": "A ripple breaks still water",
+  //              "Access-Control-Allow-Origin": true
+  //             },
+  //     data: {//"key": "thisStringTest577777777777777777777777777777777",
+  //            "data": "A ripple breaks still water.  It is the first echo of action that, however small, disrupts the equilibrium of a whole body of water. It only takes one motion against the norm.  Raven + Lily is a socially conscientious lifestyle brand that is dedicated to empowering impoverished women through design and they aspire to affect change. Where others sit on the shore, Raven + Lily dives in. Their own channel would not be crossed easily.  When they switched from a nonprofit model to a for-profit social enterprise, they needed to build a great website to showcase the brand, share their story and support their mission. Like the steady, rhythmic push and pull keeps them afloat, they were steadfast. Determined to soar above the ascending depths, We needed something that would be powerful because we had a big vision and wanted to grow and become a bigger company,¡ said Dickerson. A swimmer might pause, to lift their head above the water and survey the distance before them. All becomes still. And then a second wind. Bigcommerce. Raven + Lily was able to easily create a useful and beautiful store on the Bigcommerce platform with in-house design and resources. The result from 2012 to 2014, they saw 150% growth in their ecommerce sales.;Year-over-year sales have quadrupled;Online sales have increased 150% from 2012 to 2014;Opened flagship retail location in 2014;Currently employ over 800 at-risk women around the world. Touched by the magnified ripples, an ecosystem awakes. The swimmer turns around for a second lap.  With Bigcommerce, Raven + Lily will keep moving forward. "},
+  //     dataType: 'xml',
+  //     success: function(data, status, jqXHR){
+  //         console.log('Success!');
+  //         console.log(data);
+  //         console.log(status);
+  //         console.log(jqXHR);
+  //     },
+  //     error: function(jqXHR, status, error){
+  //         console.log('ERROR');
+  //         console.log(jqXHR);
+  //         console.log(status + ' : error status');
+  //         console.log(error);
+  //     },
+  //   });
+  // });
+
+  $('.button-submit').on("click", function(){
+    var q1 = $('#Q1').val().trim().replace(/[.]$/, "");
+    var q2 = $('#Q2').val().trim().replace(/[.]$/, "");
+    var q3 = $('#Q3').val().trim().replace(/[.]$/, "");
+    var q4 = $('#Q4').val().trim().replace(/[.]$/, "");
+    var q5 = $('#Q5').val().trim().replace(/[.]$/, "");
+    var q6 = $('#Q6').val().trim().replace(/[.]$/, "");
+    var q7 = $('#Q7').val().trim().replace(/[.]$/, "");
+    var q8 = $('#Q8').val().trim().replace(/[.]$/, "");
+    var q9 = $('#Q9').val().trim().replace(/[.]$/, "");
+    var q10 = $('#Q10').val().trim().replace(/[.]$/, "");
+    var q11 = $('#Q11').val().trim().replace(/[.]$/, "");
+    var q12 = $('#Q12').val().trim().replace(/[.]$/, "");
+
+    var emotValue = [];
+
+
+    var arrayOfAvgs = [];
+    var templates = { water: { regex: "/^&/g, \',\'" , sentences: ["A ripple breaks still water.  It is the first echo of action that, however small, disrupts the equilibrium of a whole body of water.  ",
+                                 "It only takes one motion against the norm.  " + q2 + " and they aspire to affect change.  ",
+                                 "Where others sit on the shore, " + q1 + " dives in.  ",
+                                 "Their own channel would not be crossed easily.  " + q3 + ".  ",
+                                 "Like the steady, rhythmic push and pull keeps them afloat, they were steadfast.  ",
+                                 "Determined to soar above the ascending depths, " + q5 + ".  ",
+                                 "A swimmer might pause, to lift their head above the water and survey the distance before them. All becomes still. ",
+                                 "And then a second wind. " + q8 + ".  ",
+                                 q10 + ".  ",
+                                 "Touched by the magnified ripples, an ecosystem awakes. The swimmer turns around for a second lap.  With " + q8 + ", " + q1 + " will keep moving forward."
+                                 ]},
+
+                      shootout: { regex: "/^&/g, \',\'", sentences: ["Tumbleweeds roll across a ghost town. All’s quiet, and tension electrifies the air.  ",
+                                 q1 + " is " + q2 + ", and they were called to action.  ",
+                                 "When " + q1 + ", " + q3 + ".  ",
+                                 "People rely on " + q1 + ", but when trouble comes, would they have the support to defend their own?  ",
+                                 q4 +".  Windows are shuttered and the bars close when cowboys face off. ",
+                                 "All eyes are on hands hovering above holsters. Who will be the fastest draw?  ",
+                                 "With a trigger and a flash of smoke, the gunslingers take their shots. Even in the wild west, allies emerge.  " + q7 + ". ",
+                                 "With the support of " + q8 + ", " + q1 + " " + q10 + ". Their outlaws were on the run.  ",
+                                 q11 + '.  ',
+                                 "The day is saved, and " + q1 + " holsters their gun. Now they’re looking to the future.  "
+                                 ]}
+                     };
+
+    String.prototype.regExGuantlet = function(){
+      var newString;
+      console.log(this + ' :before');
+      // newString = this.replace(/\b\w{4}\b/g, 'BooyaKASHA');
+      newString = this.replace(/¡/g, '');
+      newString = newString.replace(/("")/g, '"');
+      newString = newString.replace(/\?\./g, '?');
+      newString = newString.replace(/;\w/g, '; ');
+      console.log(newString + ' :after');
+      return newString
+
+    };
+
+    var template = templates[$('#template-selection').val()];
+
+    function concatStory(template){
+      console.log('here');
+      var story = '';
+      var sentences = template['sentences'];
+      var analyzeText;
+      readyForMapping = false;
+      // $('textarea').each(function(){
+      //   var sentence = this.innerHTML;
+      //   console.log(sentence);
+      //   if(sentence === '' || sentence === undefined || sentence === null){
+      //     readyForMapping = false;
+      //     alert("You must fill in all questions");
+      //     return
+      //   };
+      // });
+      for(var i = 0; i < sentences.length; i++){
+        // console.log('Sentence['+ i + ']: ' + sentences[i])
+        analyzeText = template['sentences'][i].trim().concat(' ').regExGuantlet();//.regExGuantlet(template['regex']);
+        story += analyzeText;
+        readyForMapping = true;
+        if (readyForMapping){
+          console.log('start API call');
+          // getMapPlot();
+        };
+      };
+      $('#output').html(story).addProofreader({ edit_text_content: 'Edit Text', proofread_content: 'Proofread' });
+    };
+
+    // Subjective input, this bank of emotions should be expanded
+    var emotBank = { grief: -6, invisible: -5, ignored: -5, helpless: -6, unhappy: -1,
+                     alone: -2, peaceful: 1, refreshed: 2, content: 1, warm: 2, chill: -1,
+                     glad: 2, accomplished: 3, satisfied: 1, calm: 1, relaxed: 1, defeated: -3,
+                     numb: 0, hungover: 0, nauseous: -2, yucky: -1, ashamed: -3, embarrassed: -2,
+                     disappointed: -1, sadness: -5, conflicted: 0, bummed: -1, rage: -4,
+                     frustrated: -1, irritated: -1, mad: -3, acceptance: 1, pride: 3, stuck: 0,
+                     inspired: 4, empowered: 4, creative: 2, furious: -4, angry: -4, offended: -1,
+                     qualified: 2, secure: 1, kind: 2, professional: 2, trust: 4, grateful: 4,
+                     healthy: 3, optimism: 2, optimistic: 2, joy: 4, relieved: 1, fantastic: 4,
+                     inlove: 4, beautiful: 4, welcome: 2, positive: 2, spoiled: 2, awful: -3,
+                     miserable: -5, admiration: 4, honored: 4, motivated: 3, blissful: 4,
+                     productive: 2, betrayed: -1, hopeless: -6, useless: -5, blue: -3,
+                     complete: 1, confident: 2, appreciated: 1, better: 2, delighted: 4,
+                     ecstatic: 4, adventurous: 3, giddy: 4, uneasy: -2, ready: 2, guilty: -2,
+                     trapped: -3, unappreciated: -1, neglected: -5, dumb: 0, bitter: -3,
+                     disgusted: -4, stupid: -5, gross: -1, disgust: -2, lousy: 0, nostalgic: 2,
+                     unloved: -5, fear: -6, spooky: -2, safe: 1, overwhelmed: -1, submission: -1,
+                     concerned: -2, afraid: -6, scared: -6, thankful: 4, proud: 4, aggravated: -1,
+                     bullying: -4, pissed: -3, horrible: -3, meh: 0, alive: 3, butterflies: 2,
+                     anxious: 0, hopeful: 2, vigilance: 0, insecure: -5, worried: -2, suspicious: -3,
+                     depressed: -6
+                    };
+
+    // Make an Ajax call to Mashape(API that returns two arrays of emotions)
+    function getEmotions(analyzeText, index) {
+      // UX Spinner while ajax calls are being processed.
+      var opts = { lines: 11 , length: 23, width: 14, radius: 42, scale: .5, corners: 0.5, color: '#000', opacity: 0.1, rotate: 56, direction: 1 , speed: 1 , trail: 60 , fps: 20 , zIndex: 2e9, className: 'spinner', top: '51%', left: '50%', shadow: false, hwaccel: false , position: 'relative'}
+      var target = document.getElementById('placeholder') // start the spinner
+      var spinner = new Spinner(opts).spin(target);
+      var i = index;
+      console.log('Getting Emotions from Mashape');
+      $.ajax({
+        type: "POST",
+        url: "https://shl-mp.p.mashape.com/webresources/jammin/emotionV2",
+        headers: {
+          "X-Mashape-Key": "2bBaxOke4Bmsh5wP1ZkiGwnGX67Np1UGniOjsnOOKlPaQCAmmP",
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          "lang": "en",
+          "text": analyzeText
+        },
+        success: function(data, status, jqXHR){
+          console.log('Success!');
+          var emotions = data.groups[0].emotions;
+          emotions = emotions.concat(data.groups[1].emotions);
+          mapEmotions(emotions, i);           // call the mapEmotions to find the mean emotion of each sentence.
+          if (dataPlots.length === template['sentences'].length){
+            overallEmot(arrayOfAvgs)
+            graphIt(dataPlots);
+            spinner.stop();
+          } else {
+            console.log('Data not ready to graph yet');
+          };
+        },
+        error: function(jqXHR, status, error){
+          console.log(jqXHR);
+          console.log(status + ': Error status code');
+          console.log(error);
+          spinner.stop();
+          $('#placeholder').html('<p>Error with call to Mashape</p><p>Error: ' + jqXHR.responseText+ '</p>');
+        },
+        dataType: 'json',
+      });
+    };
+
+    // mapEmotions takes the collection of emotions per sentence grouping in template['sentences'] array,
+    //  sums up their value by mapping to the emotionBank, counts total entries and divides
+    //  to find the mean. The mean is the Y in the [X, Y] plot for that sentence.
+    function mapEmotions(emotions, index){
+      var emotions = emotions;
+      var sum = 0;
+      var count = 0;
+      for(var i = 0; i < emotions.length; i++){
+        if (emotBank[emotions[i]]){
+          sum += emotBank[emotions[i]];
+          count += 1
+        }
+      }
+      arrayOfAvgs.push(parseFloat(sum/count));
+      dataPlots[index] = [index + 1, parseFloat(sum / count)];
+    };
+
+
+
+
+
+    function graphIt(data){
+      // data1 = [[1, 2.625], [2, 1.8333], [3, 2.2857], [4, -3.1465], [5, -2.6], [6, -0.4166], [7, -3], [8, -0.1428], [9, 2.2857], [10, 2.2222]]
+      dataForGraph = [{
+                        data: data,
+                        label: "Emotion of the Story",
+                        color: "#F0F",
+                        // bars: {show:true},
+                        lines: {show:true},
+                        points: {show:true}
+                       }];
+      options = {
+                 legend: {position:"nw"}
+                 };
+      chart = $.plot($("#placeholder"), dataForGraph, options);
+    };
+
+    function overallEmot(arrayOfAvgs){
+      var sum = arrayOfAvgs.reduce(function(prev, cur) {
+        return prev + cur;
+      });
+      var gist = sum / arrayOfAvgs.length
+      var roundedGist = Math.round(gist);
+      var gistEmot = overArchingEmot[roundedGist];
+
+      //Display in tester box
+      $('div#gist').html('<h3>The emotion score of this Story: </h3><p>'
+        + gist + '</p><h4> Emotion: </h4><p>' + gistEmot + '</p>').hide().fadeIn(1000);
+    };
+
+
+    function getMapPlot(){
+      template["sentences"].forEach(function(sentence, index){
+        getEmotions(sentence, index);
+      });
+    };
+
+
+    // Display the concatenated story in the review box.
+    concatStory(template);
+
+    // This kicks it off:
+    // getMapPlot();
+
+  });
+
+    // Allow for Reviewer to HEAR through responsive Voice.  This is the simplest pluggin,
+    //   its a $50/month service, but there are opensource plugins that are free, this was
+    //   just as simple implementation.
+    $('#play').on('click', function(){
+      console.log($('#output').html());
+      responsiveVoice.speak($('#output').html());;
+    });
+
+})

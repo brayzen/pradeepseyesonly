@@ -13,5 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= swapData
+//= storyToEmotion
+//= mess
 //= require_tree .
 

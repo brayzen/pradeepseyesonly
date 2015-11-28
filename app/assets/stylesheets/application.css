@@ -12,6 +12,6 @@
  *
  *
  *= require welcome.scss
- *= require_tree .
+ *= require atd.css
  *= require_self
  */
