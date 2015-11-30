@@ -275,17 +275,16 @@ $(document).ready(function(){
     $('#story-preview').show();
     var storyData = new StoryData;
     storyData.makeStory();
-
+    $('#play').show();
+    alert("Feel free to press the Play button at the bottom of the Text Preview.  Hearing it will also help you catch mistakes.  We do our best, but you know exactly how you want it to sound like.");
 
     // Allow for Reviewer to HEAR through responsive Voice.  This is the simplest pluggin,
     //   its a $50/month service, but there are opensource plugins that are free, this was
     //   just as simple implementation.
     $('#play').on('click', function(){
-      console.log('play sound');
       responsiveVoice.speak($('#story-preview').html());;
     });
-
-  })
+  });
 
 
   //CONTENTBOX additional feature
