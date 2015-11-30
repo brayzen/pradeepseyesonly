@@ -4,24 +4,22 @@
   <title>GraphExample</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-
   <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' 'flot-graph' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 <script>
-  // function enterPassword(){
-  //   var name = prompt('Welcome, Please enter your first Name')
-  //   if (name.toLowerCase() != 'pradeep' || name === null){
-  //     alert('Sorry, you\'re not who we\'re looking for, Good luck');
-  //     enterPassword();
-  //   } else {
-  //     alert('Welcome Pradeep, hope you enjoy this experience.');
-  //     alert('Please turn up your sound');
-  //   };
-  // }
-  // enterPassword();
+    var name = prompt('Welcome, Please enter your first Name')
+    if (name.toLowerCase() != 'pradeep' || name === null){
+      alert('Sorry, you\'re not who we\'re looking for, Good luck');
+      enterPassword();
+    } else {
+      var yek1 = "2bBaxOke4Bmsh5wP1ZkiGwnGX67Np1UGniOjsnOOKlPaQCAmmP";
+      alert('Welcome Pradeep, good to see you.');
+      alert('Please turn up your sound');
+      window.yek = yek1;
+    };
 </script>
 <%= yield %>
 

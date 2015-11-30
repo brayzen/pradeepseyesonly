@@ -27,7 +27,7 @@ var StoryData = function(){
   this.dataPlots = [];
   this.emotValue = []
   this.arrayOfAvgs = [];
-  // Subjective input, this bank of emotions should be expanded
+  // Subjective input, this bank of emotions should be expanded and made a consensus
   this.emotBank = { grief: -6, invisible: -5, ignored: -5, helpless: -6, unhappy: -1,
                    alone: -2, peaceful: 1, refreshed: 2, content: 1, warm: 2, chill: -1,
                    glad: 2, accomplished: 3, satisfied: 1, calm: 1, relaxed: 1, defeated: -3,
@@ -107,6 +107,7 @@ String.prototype.regExGuantlet = function(){
   newString = newString.replace("¦", '.');
   newString = newString.replace("¡", '.');
   newString = newString.replace(/\.\./g, '.');
+  newString = newString.replace("°", "");
   return newString
 };
 
@@ -126,52 +127,51 @@ StoryData.prototype.makeStory = function(){
 
 // Make an Ajax call to Mashape(API that returns two arrays of emotions)
 StoryData.prototype.getEmotions = function(analyzeText, index) {
+  if (analyzeText){
   // UX Spinner while ajax calls are being processed.
-  var storydata = this;
-  var opts = { lines: 11 , length: 23, width: 14, radius: 42, scale: .5, corners: 0.5, color: '#000', opacity: 0.1, rotate: 56, direction: 1 , speed: 1 , trail: 60 , fps: 20 , zIndex: 2e9, className: 'spinner', top: '51%', left: '50%', shadow: false, hwaccel: false , position: 'relative'}
-  var target = document.getElementById('placeholder') // start the spinner
-  var spinner = new Spinner(opts).spin(target);
-  var i = index;
-  console.log('Getting Emotions from Mashape');
-  $.ajax({
-    type: "POST",
-    url: "https://shl-mp.p.mashape.com/webresources/jammin/emotionV2",
-    headers: {
-      "X-Mashape-Key": "2bBaxOke4Bmsh5wP1ZkiGwnGX67Np1UGniOjsnOOKlPaQCAmmP",
-      "Accept": "application/json",
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    data: {
-      "lang": "en",
-      "text": analyzeText
-    },
-    success: function(data, status, jqXHR){
-      console.log('Success!' + storydata.dataPlots.length + ' vs ' + storydata.template.length);
-
-      var emotions = data.groups[0].emotions;
-      if (data.groups[1]){emotions = emotions.concat(data.groups[1].emotions)};
-      console.log(emotions);
-      storydata.mapEmotions(emotions, i);
-      console.log(storydata.dataPlots[0]);   // call the mapEmotions to find the mean emotion of each sentence.
-      if (storydata.dataPlots.length === storydata.template.length){
-        storydata.overallEmot();
-        storydata.graphIt();
+    var storydata = this;
+    var yek = window.yek;
+    var opts = { lines: 11 , length: 23, width: 14, radius: 42, scale: .5, corners: 0.5, color: '#000', opacity: 0.1, rotate: 56, direction: 1 , speed: 1 , trail: 60 , fps: 20 , zIndex: 2e9, className: 'spinner', top: '51%', left: '50%', shadow: false, hwaccel: false , position: 'relative'}
+    var target = document.getElementById('placeholder') // start the spinner
+    var spinner = new Spinner(opts).spin(target);
+    var i = index;
+    console.log('Getting Emotions from Mashape');
+    $.ajax({
+      type: "POST",
+      url: "https://shl-mp.p.mashape.com/webresources/jammin/emotionV2",
+      headers: {
+        "X-Mashape-Key": yek,
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      data: {
+        "lang": "en",
+        "text": analyzeText
+      },
+      success: function(data, status, jqXHR){
+        var emotions = data.groups[0].emotions;
+        if (data.groups[1]){emotions = emotions.concat(data.groups[1].emotions)};
+        storydata.mapEmotions(emotions, i);
+        if (storydata.dataPlots.length === storydata.template.length){
+          storydata.overallEmot();
+          storydata.graphIt();
+          spinner.stop();
+        } else {
+          console.log('Data not ready to graph yet');
+        };
+        storydata.count++;
+        console.log(storydata.count);
+      },
+      error: function(jqXHR, status, error){
+        console.log(jqXHR);
+        console.log(status + ': Error status code');
+        console.log(error);
         spinner.stop();
-      } else {
-        console.log('Data not ready to graph yet');
-      };
-      storydata.count++;
-      console.log(storydata.count);
-    },
-    error: function(jqXHR, status, error){
-      console.log(jqXHR);
-      console.log(status + ': Error status code');
-      console.log(error);
-      spinner.stop();
-      $('#placeholder').html('<p>Error with call to Mashape</p><p>Error: ' + jqXHR.responseText+ '</p>');
-    },
-    dataType: 'json',
-  });
+        $('#placeholder').html('<p>Error with call to Mashape</p><p>Error: ' + jqXHR.responseText+ '</p><p>You\'re not authorized are you?</p>');
+      },
+      dataType: 'json',
+    });
+  }
 };
 
 StoryData.prototype.mapEmotions = function(emotions, index){
@@ -281,13 +281,15 @@ $(document).ready(function(){
     //   its a $50/month service, but there are opensource plugins that are free, this was
     //   just as simple implementation.
     $('#play').on('click', function(){
-      responsiveVoice.speak($('#output').html());;
+      console.log('play sound');
+      responsiveVoice.speak($('#story-preview').html());;
     });
 
   })
+
+
   //CONTENTBOX additional feature
   $('.context').on('click', function(){
-
       $('#context-box').show();
       var storyData1 = new StoryData;
       var templateId = this.id.slice(1);
