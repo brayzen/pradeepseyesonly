@@ -38,7 +38,7 @@ div.testing-box {
   top: 0;
   right: 0;
   min-width: 30%;
-  min-height: 90%;
+  min-height: 100%;
   border: 3px solid #F90;
   border-radius: 3px;
   background-color: #DDD;
@@ -53,7 +53,7 @@ div.testing-box {
 }
 
 #play {
-
+  display: none;
 }
 
 #gist p{

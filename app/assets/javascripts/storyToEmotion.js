@@ -195,7 +195,7 @@ StoryData.prototype.mapEmotions = function(emotions, index){
 StoryData.prototype.graphIt = function(){
   dataForGraph = [{
                     data: this.dataPlots,
-                    label: "Emotion of the StoryString",
+                    label: "Emotion of the Story",
                     color: "#F0F",
                     // bars: {show:true},
                     lines: {show:true},
@@ -217,7 +217,7 @@ StoryData.prototype.overallEmot = function(){
     var gistEmot = this.overArchingEmot[roundedGist];
 
     //Display in tester box
-    $('div#gist').html('<h3>The emotion score of this StoryString: </h3><p>' + gist + '</p><h4> Emotion: </h4><p>' + gistEmot + '</p>').hide().fadeIn(1000);
+    $('div#gist').html('<h3>The emotion score of this Story:</h3><p>' + gist + '</p><h4> Emotion: </h4><p>' + gistEmot + '</p>').hide().fadeIn(1000);
 };
 
 // loop through sentences to getEmotions for entire story
