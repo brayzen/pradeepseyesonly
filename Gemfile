@@ -30,6 +30,8 @@ gem 'grammar', '~> 0.8.1'
 
 gem 'gingerice', '~> 1.2', '>= 1.2.2'
 
+gem 'rails_12factor'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
