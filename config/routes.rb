@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
+  root 'welcome#index'
+
+  # get '/grammar' => 'welcome#grammar'
+  # get '/grammar/"story":":text"'=> 'welcome#grammar'
+  get '/grammar' => 'welcome#grammar'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

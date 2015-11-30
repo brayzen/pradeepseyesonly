@@ -15,6 +15,6 @@
 //= require turbolinks
 //= swapData
 //= storyToEmotion
-//= mess
+//= contextBox
 //= require_tree .
 
